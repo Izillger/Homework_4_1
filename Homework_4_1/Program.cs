@@ -212,22 +212,28 @@ namespace Homework_4_1
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("------------------------------------------------------------\n");
 
-            int[] newArrayProfit = new int[12]; // Новый массив для сортировки прибыли
+            int[] sortArrayProfit = new int[12]; // Новый массив для сортировки прибыли (чтобы не путать данные для других заданий)
+            string[] sortArrayMounth = new string[12]; // Новый массив для сортировки прибыли
 
+            // Заполнение новых массивов
             for (int j = 0; j < arrayProfit.Length; j++)
             {
-                newArrayProfit[j] = arrayProfit[j];
+                sortArrayProfit[j] = arrayProfit[j];
+                sortArrayMounth[j] = arrayMonth[j];
             }
 
-            Array.Sort(newArrayProfit); // Сортировка массива для вывода худших месяцев по прибыли
+            // Сортировка массива c месяцами по значению массива с доходами
+            Array.Sort(sortArrayProfit.ToArray(), sortArrayMounth); 
+            Array.Sort(sortArrayProfit); // Сортировка массива для вывода худших месяцев по прибыли
+            
 
-            for (int i = 0; i < newArrayProfit.Length; i++)
-            {
+            for (int i = 0; i < sortArrayProfit.Length; i++)
+            { 
                 // Выводит первые 3 худших месяца и если есть совпадения по суммам, то выводит все остальные
-                if (i <= 2 || newArrayProfit[2] == newArrayProfit[i])
+                if (i <= 2 || sortArrayProfit[2] == sortArrayProfit[i])
                 {
-                    Console.WriteLine($"{arrayMonth[i],10}" +
-                                      $"{newArrayProfit[i].ToString(newArrayProfit[i] == 0 ? "### ##0" : "### ###"),14}");
+                    Console.WriteLine($"{sortArrayMounth[i],10}" +
+                                      $"{sortArrayProfit[i].ToString(sortArrayProfit[i] == 0 ? "### ##0" : "### ###"),14}");
                     if (i != 2) continue; // Разделитель после 3-го месяца
                     {
                         Console.WriteLine("-------------------------");

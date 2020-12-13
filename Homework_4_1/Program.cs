@@ -266,7 +266,7 @@ namespace Homework_4_1
 
             int[][] arrayTriangle = new int[n][];
             // первая строка
-            arrayTriangle[0] = new int[1] /*{1}*/;
+            arrayTriangle[0] = new int[1];
 
             for (int i = 0; i < arrayTriangle.Length; i++)    // Вычисление треугольника
             {
@@ -287,13 +287,14 @@ namespace Homework_4_1
                 System.Console.Write("   ");
                 for (int q = 0; q < n - i; q++)     // Расставляем пробелы для построения треугольника
                 {
-                    System.Console.Write("  ");
+                    System.Console.Write("   ");
                 }
                 for (int j = 0; j < arrayTriangle[i].Length; j++)
                 {
-                    Console.Write($"{arrayTriangle[i][j],4}");
+                    System.Console.Write(" ");
+                    Console.Write($"{arrayTriangle[i][j],5}");
                 }
-                Console.WriteLine();
+                Console.WriteLine("\n");
             }
             ReturnMenu();
             Console.ReadKey();
@@ -490,16 +491,17 @@ namespace Homework_4_1
             Console.ForegroundColor = ConsoleColor.Cyan;
 
             Console.WriteLine($"{"Количество строк должно совпадать с количеством столбцов!\n"}");
-            Console.WriteLine($"{"Введите количество строк матрицы для 1-ой матрицы: \n"}");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"{"Введите количество строк для 1-ой матрицы: \n"}");
             matrixString1 = int.Parse(Console.ReadLine());
 
-            Console.WriteLine($"{"Введите количество столбцов матрицы для 1-ой матрицы: \n"}");
+            Console.WriteLine($"{"Введите количество столбцов для 1-ой матрицы: \n"}");
             matrixColumn1 = int.Parse(Console.ReadLine());
-
-            Console.WriteLine($"{"Введите количество строк матрицы для 2-ой матрицы: \n"}");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine($"{"Введите количество строк для 2-ой матрицы: \n"}");
             matrixString2 = int.Parse(Console.ReadLine());
 
-            Console.WriteLine($"{"Введите количество столбцов матрицы для 2-ой матрицы: \n"}");
+            Console.WriteLine($"{"Введите количество столбцов для 2-ой матрицы: \n"}");
             matrixColumn2 = int.Parse(Console.ReadLine());
 
             Console.ForegroundColor = ConsoleColor.White;
@@ -511,47 +513,52 @@ namespace Homework_4_1
             int[,] matrixB = new int[matrixString2, matrixColumn2];       // Матрица 2 для вывода результата
 
             // Заполнеие, перемножение и вывод матриц на экран
-            for (int i = 0; i < matrixA.GetLength(0); i++)
+            for (int i = 0; i < matrixString1; i++)
             {
                 // Вывод входящих данных для 1-ой матрицы
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.Write("  |");                        
-                Console.ForegroundColor = ConsoleColor.White;
-                for (int jr = 0; jr < matrixA.GetLength(0); jr++)
-                {
-                    matrixA[i, jr] = rand.Next(1,10);     // Заполнение матрицы рандомом
-                    Console.Write($"{matrixA[i, jr],3}");
-                }
-                Console.ForegroundColor = ConsoleColor.Red;
                 Console.Write("  |");
-
-                // Вывод входящих данных для 2-ой матрицы
-                Console.Write("  X  |");
                 Console.ForegroundColor = ConsoleColor.White;
-                for (int kr = 0; kr < matrixB.GetLength(1); kr++)
+                for (int j = 0; j < matrixColumn1; j++)
                 {
-                    matrixB[i, kr] = rand.Next(1,10);      // Заполнение матрицы рандомом
-                    Console.Write($"{matrixB[i, kr],3}");
+                    matrixA[i, j] = rand.Next(1, 10); // Заполнение матрицы рандомом
+                    Console.Write($"{matrixA[i, j],3}");
+                }
+
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write("  |  X");
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+
+            // Вывод входящих данных для 2-ой матрицы
+            for (int i = 0; i < matrixString2; i++)
+            {
+                Console.Write("  |");
+                Console.ForegroundColor = ConsoleColor.White;
+                for (int k = 0; k < matrixColumn2; k++)
+                {
+                    matrixB[i, k] = rand.Next(1,10);      // Заполнение матрицы рандомом
+                    Console.Write($"{matrixB[i, k],3}");
 
                 }
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.Write("  |");
                 Console.WriteLine();
             }
-
             Console.WriteLine();
                 
-                // Проверка на возможность перемножения матриц и вывод результата на экран
-                if (matrixString1 == matrixColumn2)
+            // Проверка на возможность перемножения матриц и вывод результата на экран
+            if (matrixString1 == matrixColumn2 || matrixString2 == matrixColumn1)
             {
               int[,] matrixResult = MultiplicationMatrix(matrixA, matrixB);
-                  for (int i = 0; i < matrixB.GetLength(1); i++)
+                  for (int i = 0; i < matrixA.GetLength(1); i++)
                   {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.Write("  =  |");
                     Console.ForegroundColor = ConsoleColor.White;
 
-                    for (int j = 0; j < matrixB.GetLength(1); j++)
+                    for (int j = 0; j < matrixB.GetLength(0); j++)
                     {
                      Console.Write($"\t{matrixResult[i, j],4}");
                     }
@@ -567,18 +574,18 @@ namespace Homework_4_1
                 int[,] MultiplicationMatrix(int[,] matrixa, int[,] matrixb)
                 {
                 int[,] r = new int[matrixa.Length, matrixb.Length];  // Матрица для вывода результата
-                for (int i = 0; i < matrixb.GetLength(1); i++)
-                {
-                    for (int j = 0; j < matrixb.GetLength(0); j++)
+                    for (int i = 0; i < matrixa.GetLength(1); i++)
                     {
-                        r[i, j] = 0;
-                        for (int k = 0; k < matrixb.GetLength(0); k++)
+                        for (int j = 0; j < matrixb.GetLength(0); j++)
                         {
-                             r[i, j] += matrixa[i, k] * matrixa[k, j];
+                            r[i, j] = 0;
+                            for (int k = 0; k < matrixb.GetLength(0); k++)
+                            {
+                                r[i, j] += matrixa[i, k] * matrixb[k, j];
+                            }
                         }
                     }
-                } 
-                return r;
+                    return r;
             }
             Console.WriteLine();
             ReturnMenu();

@@ -93,34 +93,34 @@ namespace Homework_4_1
         #region
         private static int[] arrayEntrances =
     {
-        100_000,
-        120_000,
-        80_000,
-        70_000,
-        100_000,
-        200_000,
-        130_000,
-        150_000,
-        190_000,
-        110_000,
-        150_000,
-        100_000
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        30,
+        30,
+        20,
+        20,
+        10,
+        10
     }; // Массив дохода
 
         private static int[] arrayExpenses =
     {
-        80_000,
-        90_000,
-        70_000,
-        70_000,
-        80_000,
-        120_000,
-        140_000,
-        65_000,
-        90_000,
-        70_000,
-        120_000,
-        80_000
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
     }; // Массив расходов
 
         private static string[] arrayMonth =
@@ -225,22 +225,29 @@ namespace Homework_4_1
             // Сортировка массива c месяцами по значению массива с доходами
             Array.Sort(sortArrayProfit.ToArray(), sortArrayMounth); 
             Array.Sort(sortArrayProfit); // Сортировка массива для вывода худших месяцев по прибыли
+            int count = 0;               // Счётчик для пропуска 0-ых месяцев
+            int countThree = 0;          // Счётчик для первых 3-х месяцев
             
-
-            for (int i = 0; i < sortArrayProfit.Length; i++)
-            { 
-                // Выводит первые 3 худших месяца и если есть совпадения по суммам, то выводит все остальные
-                if (i <= 2 || sortArrayProfit[2] == sortArrayProfit[i])
+                for (int i = 0; i < sortArrayProfit.Length; i++)
                 {
-                    Console.WriteLine($"{sortArrayMounth[i],10}" +
-                                      $"{sortArrayProfit[i].ToString(sortArrayProfit[i] == 0 ? "### ##0" : "### ###"),14}");
-                    if (i != 2) continue; // Разделитель после 3-го месяца
+                if (count < 3 || sortArrayProfit[i] == countThree) // Проверка первых трёх месяцев и последующих совпадений по прибыли
                     {
-                        Console.WriteLine("-------------------------");
+                    // Выводит первые 3 худших месяца и если есть совпадения по суммам, то выводит все остальные
+                    if (arrayEntrances[i] == 0 && arrayExpenses[i] == 0 && sortArrayProfit[i] == 0) continue;
+                        {
+                           Console.WriteLine($"{sortArrayMounth[i],10}" +
+                              $"{sortArrayProfit[i].ToString(sortArrayProfit[i] == 0 ? "### ##0" : "### ###"),14}"); 
+                        ++count;                                                  
+                            
+                        }
+                            if (count != 3) continue; // Разделитель после 3-го месяца
+                             {
+                                countThree = sortArrayProfit[i]; // Записываем 3-й месяц для поиска схожих по прибыли других месяцев
+                                Console.WriteLine("-------------------------");
+                             }
                     }
-                }
-            }
-
+                    
+                }             
             ReturnMenu();
 
         }
@@ -549,16 +556,16 @@ namespace Homework_4_1
             Console.WriteLine();
                 
             // Проверка на возможность перемножения матриц и вывод результата на экран
-            if (matrixString1 == matrixColumn2 || matrixString2 == matrixColumn1)
+            if (matrixA.GetUpperBound(1) + 1 == matrixB.GetUpperBound(0) + 1)
             {
               int[,] matrixResult = MultiplicationMatrix(matrixA, matrixB);
-                  for (int i = 0; i < matrixA.GetLength(1); i++)
+                  for (int i = 0; i < matrixA.GetLength(0); i++)
                   {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.Write("  =  |");
                     Console.ForegroundColor = ConsoleColor.White;
 
-                    for (int j = 0; j < matrixB.GetLength(0); j++)
+                    for (int j = 0; j < matrixB.GetLength(1); j++)
                     {
                      Console.Write($"\t{matrixResult[i, j],4}");
                     }
@@ -573,13 +580,13 @@ namespace Homework_4_1
             // Перемножения матриц
                 int[,] MultiplicationMatrix(int[,] matrixa, int[,] matrixb)
                 {
-                int[,] r = new int[matrixa.Length, matrixb.Length];  // Матрица для вывода результата
-                    for (int i = 0; i < matrixa.GetLength(1); i++)
+                int[,] r = new int[matrixa.GetUpperBound(0) + 1, matrixb.GetUpperBound(1) + 1];  // Матрица для вывода результата
+                    for (int i = 0; i < matrixa.GetUpperBound(0) + 1; i++)
                     {
-                        for (int j = 0; j < matrixb.GetLength(0); j++)
+                        for (int j = 0; j < matrixb.GetUpperBound(1) + 1; j++)
                         {
                             r[i, j] = 0;
-                            for (int k = 0; k < matrixb.GetLength(0); k++)
+                            for (int k = 0; k < matrixa.GetUpperBound(1) + 1; k++)
                             {
                                 r[i, j] += matrixa[i, k] * matrixb[k, j];
                             }

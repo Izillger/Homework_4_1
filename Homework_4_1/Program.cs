@@ -225,31 +225,24 @@ namespace Homework_4_1
             // Сортировка массива c месяцами по значению массива с доходами
             Array.Sort(sortArrayProfit.ToArray(), sortArrayMounth); 
             Array.Sort(sortArrayProfit); // Сортировка массива для вывода худших месяцев по прибыли
-            int count = 0;               // Счётчик для пропуска 0-ых месяцев
-            int countThree = 0;          // Счётчик для первых 3-х месяцев
+            int count = 0;               // Счётчик для вывода месяцев с самой низкой прибылью
             
-                for (int i = 0; i < sortArrayProfit.Length; i++)
-                {
-                if (count < 3 || sortArrayProfit[i] == countThree) // Проверка первых трёх месяцев и последующих совпадений по прибыли
-                    {
-                    // Выводит первые 3 худших месяца и если есть совпадения по суммам, то выводит все остальные
-                    if (arrayEntrances[i] == 0 && arrayExpenses[i] == 0 && sortArrayProfit[i] == 0) continue;
-                        {
+            for (int i = 0; i < sortArrayProfit.Length; i++)
+            {   
+                if (count == 0 || (((i + 1) < sortArrayProfit.Length) && sortArrayProfit[i + 1] >= sortArrayProfit[i])) 
+                { 
+                     if (count < 3)
+                     {  
                            Console.WriteLine($"{sortArrayMounth[i],10}" +
-                              $"{sortArrayProfit[i].ToString(sortArrayProfit[i] == 0 ? "### ##0" : "### ###"),14}"); 
-                        ++count;                                                  
-                            
-                        }
-                            if (count != 3) continue; // Разделитель после 3-го месяца
-                             {
-                                countThree = sortArrayProfit[i]; // Записываем 3-й месяц для поиска схожих по прибыли других месяцев
-                                Console.WriteLine("-------------------------");
-                             }
-                    }
-                    
-                }             
+                              $"{sortArrayProfit[i].ToString(sortArrayProfit[i] == 0 ? "### ##0" : "### ###"),14}");
+                           // Если прибыль следующего месяца больше предыдущего то счётчик +1
+                           if (((i + 1) < sortArrayProfit.Length)  && (sortArrayProfit[i + 1] > sortArrayProfit[i])) count++;     
+                     }
+                     // Разделитель после месяцев
+                     if ((sortArrayProfit[i + 1] > sortArrayProfit[i])) Console.WriteLine("-------------------------");
+                }
+            }
             ReturnMenu();
-
         }
 
         #endregion
